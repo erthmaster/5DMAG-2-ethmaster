@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get { return _instance; } }
 
+    [SerializeField] private GameObject[] _activateAtStart;
+    [SerializeField] private GameObject _startPanel;
+
     public bool gameOn;
 
     private void Awake()
@@ -26,8 +29,17 @@ public class GameManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Start()
+    public void StartGame()
     {
+        gameOn = true;
+        
+        _startPanel.SetActive(false);
+        
+        foreach(GameObject gameObject in _activateAtStart)
+        {
+            gameObject.SetActive(true);
+        }
+
         StartNewRound();
     }
 

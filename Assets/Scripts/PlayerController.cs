@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -6,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _targetZone;
 
     [Header("Stats")]
-    public PlayerStat Statistics;
+    public PlayerStats Statistics;
 
     [Header("Components")]
     [SerializeField] private Animator _animator;
@@ -27,30 +28,39 @@ public class PlayerController : MonoBehaviour
     public AudioSource miss;
 
     public bool IsCanMoving{ private get; set; }
+    [field:SerializeField]
     public bool IsCanAttack { private get; set; }
     private bool criticalDamage;
 
     private float actMeter;
 
+    private Animator _cameraAnimator;
+
     public GameObject DeadScreen;
-    private GameStat stat;
+    private GameStats stat;
+
+    private float _attackDelayCount = 0;
 
     private void Awake()
     {
         _instance = this;
         _weapon = new SwordModel();
         Statistics.SetDefValue();
+
+        _cameraAnimator = Camera.main.GetComponent<Animator>();
     }
 
     private void Start()
     {
         _forward = true;
         IsCanAttack = true;
-        stat = GameObject.Find("Game Manager").GetComponent<GameStat>();
+        stat = GameObject.Find("Game Manager").GetComponent<GameStats>();
         _direction = Vector3.zero;
+
         //IF SOMEONE FUCKING TAKES vSYNC OUT OF HERE -BITCH I'LL RIP OFF YOUR FUCKING HANDS !!!!!
         /* DO NOT TOUCH */ QualitySettings.vSyncCount = 1; /* DO NOT TOUCH */
         //DO NOT TOUCH !!
+
         actMeter = transform.position.z;
     }
 
@@ -62,8 +72,37 @@ public class PlayerController : MonoBehaviour
         ApplyGravity();
         ApplyMovement();
         MeterCouner();
+
+        if(Statistics.Health > 20)
+        {
+            _cameraAnimator.SetTrigger("Health ok");
+        }
+        if(Statistics.Health > 10 && Statistics.Health <= 20)
+        {
+            _cameraAnimator.SetTrigger("Health 20");
+        }
+        if(Statistics.Health > 5 && Statistics.Health <= 10)
+        {
+            _cameraAnimator.SetTrigger("Health 10");
+        }
+        if(Statistics.Health >= 0 && Statistics.Health <= 5)
+        {
+            _cameraAnimator.SetTrigger("Health 5");
+        }
+
         if (Statistics.Health <= 0)
             GameOver();
+
+
+        if(!IsCanAttack)
+        {
+            float expect = Statistics.AttackDelay;
+                _attackDelayCount += Time.deltaTime;
+                UIController.Instance.UpdateACDUI(_attackDelayCount);
+
+            if(_attackDelayCount >= expect)
+                IsCanAttack = true;
+        }
     }
     private void MeterCouner()
     {
@@ -154,7 +193,7 @@ public class PlayerController : MonoBehaviour
         if (!IsCanMoving) return;
         if (!IsCanAttack) return;
         IsCanAttack = false;
-        StartCoroutine("AttackDelay");
+        _attackDelayCount = 0;
 
         stat.allHits++;
         PlayAttackAnimation();
@@ -187,11 +226,6 @@ public class PlayerController : MonoBehaviour
                 miss.Play();
             }
         }
-    }
-    IEnumerator AttackDelay()
-    {
-        yield return new WaitForSeconds(Statistics.AttackDelay);
-        IsCanAttack = true;
     }
 
     public void ClaimDamage(int damage)

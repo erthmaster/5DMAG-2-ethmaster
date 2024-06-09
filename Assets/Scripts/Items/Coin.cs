@@ -8,19 +8,12 @@ public class Coin : MonoBehaviour
 
     private Animator _animator;
 
-
-
-
-
     private void Start()
     {
         _animator = GetComponent<Animator>();
         _animator.SetBool("idle", true);
         _animator.SetBool("colected", false);
     }
-
-
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,10 +31,8 @@ public class Coin : MonoBehaviour
         }
     }
 
-
     public void DestroyCoin()
     {
         Destroy(gameObject);
     }
-
 }

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ba8722b6b0c33545b4429dd17e32006, type: 3}
   m_Name: Player Stat
   m_EditorClassIdentifier: 
-  Speed: 5
+  Speed: 1
   AdditionalDamage: 2
   Health: 50
   MaxHealth: 50
   Money: 0
   MoneyMultipler: 1
-  AttackDelay: 0
+  AttackDelay: 3
   <DefSpeed>k__BackingField: 1
   <DefAdditionalDamage>k__BackingField: 2
   <DefMaxHealth>k__BackingField: 50
@@ -26,3 +26,4 @@ MonoBehaviour:
   <DefMoney>k__BackingField: 0
   <DefMoneyMultipler>k__BackingField: 1
   <DefAttackDelay>k__BackingField: 3
+  stat: {fileID: 0}

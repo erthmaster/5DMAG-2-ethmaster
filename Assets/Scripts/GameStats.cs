@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GameStat : MonoBehaviour
+public class GameStats : MonoBehaviour
 {
     //����� ��� ������ ����������
     public int waves;
@@ -18,11 +18,11 @@ public class GameStat : MonoBehaviour
 
     public TMP_Text text;
 
-    public PlayerStat pStat;
+    public PlayerStats pStat;
 
     private void Start()
     {
-        pStat.stat = gameObject.GetComponent<GameStat>();
+        // pStat.stat = gameObject.GetComponent<GameStats>();
         StartCoroutine("Seconds");
     }
     public void SetDef()
@@ -39,15 +39,15 @@ public class GameStat : MonoBehaviour
     }
     public void SetStat()
     {
-        text.text = $"�� ������ {waves} ����\r\n" +
-            $"�� ������ {allCoins} �����\r\n" +
-            $"�� ���� {killedZombie} �����\r\n" +
-            $"�� ����� {allTime/60} ������ � ��\r\n" +
-            $"�� ������ {allUpdates} ���������\r\n" +
-            $"�� ����� {allDistance} �����\r\n" +
-            $"�� ������ ����� {allHits} ����\r\n" +
-            $"� ��� ����� {allNoMissedHits} ����\r\n" +
-            $"� ��� ����� {allCritycalHits} ����";
+        text.text = $"Ти прожив {waves} днів\r\n" +
+            $"Ти здобув {allCoins} монет\r\n" +
+            $"Ти вбив {killedZombie} зомбя\r\n" +
+            $"Ти провів {allTime/60} хвилин в грі\r\n" +
+            $"Ти зробив {allUpdates} покращень\r\n" +
+            $"Ти пробіг {allDistance} метри\r\n" +
+            $"Ти вдарив мечем {allHits} разів\r\n" +
+            $"З них попав {allNoMissedHits} рази\r\n" +
+            $"З них крітом {allCritycalHits} рази";
     }
     IEnumerator Seconds()
     {

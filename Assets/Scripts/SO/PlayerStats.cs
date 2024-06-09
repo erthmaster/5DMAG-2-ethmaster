@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Stat", menuName = "Stat")]
-public class PlayerStat: ScriptableObject
+[CreateAssetMenu(fileName = "New Player Stats", menuName = "Player Stats")]
+public class PlayerStats: ScriptableObject
 {
     [HideInInspector] public float Speed;
     [HideInInspector] public int AdditionalDamage;
-    [HideInInspector] public int Health;
+    public int Health;
     [HideInInspector] public int MaxHealth;
     [HideInInspector] public int Money;
     [HideInInspector] public float MoneyMultipler;
-    [HideInInspector] public float AttackDelay;
+    public float AttackDelay;
 
     [field: Header("Default Value")]
     [field: SerializeField] public float DefSpeed { get; private set; }
@@ -31,7 +31,7 @@ public class PlayerStat: ScriptableObject
     public int AtkSpeedLevel { get; private set; } = 1;
     public int MoneyLevel { get; private set; } = 1;
 
-    public GameStat stat;
+    public GameStats stat;
 
     public void SetDefValue()
     {

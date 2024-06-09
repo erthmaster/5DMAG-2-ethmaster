@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour
 
     public EnemyModel EnemyModel { get; private set; }
 
-    private GameStat stat;
+    private GameStats stat;
 
     public GameObject particle;
 
@@ -52,7 +52,7 @@ public class EnemyController : MonoBehaviour
         IsDead = false;
         _screamed = false;
 
-        stat = GameObject.Find("Game Manager").GetComponent<GameStat>();
+        stat = GameObject.Find("Game Manager").GetComponent<GameStats>();
         EnemyModel.wave = stat.waves;
 
         EnemyModel.Health = EnemyModel.StartHealth + 2 * EnemyModel.wave;

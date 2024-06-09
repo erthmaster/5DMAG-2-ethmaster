@@ -5,7 +5,7 @@ using TMPro;
 
 public class HUDStatistic : MonoBehaviour
 {
-    public PlayerStat stat;
+    public PlayerStats stat;
 
     public TMP_Text speed;
     public TMP_Text additionalDamage;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
 
     [Header("Components")]
+    [SerializeField] private Slider _attackCoolDownSlider;
     [SerializeField] private Slider _healthSlider;
     [SerializeField] private TextMeshProUGUI _healthText; 
     [SerializeField] private TextMeshProUGUI _coinAmountText;
@@ -35,7 +37,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text money;
 
     private static UIController _instance;
-    private GameStat stat;
+    private GameStats stat;
     public static UIController Instance { get {  return _instance; } }
 
     private PlayerController player;
@@ -45,15 +47,17 @@ public class UIController : MonoBehaviour
         _instance = this;
     }
 
-    private void Start()
+    public void StartGame()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        
         _healthPoint = _maxHealthPoint;
         UpdateHPUI(_healthPoint);
+        UpdateACDUI(player.Statistics.AttackDelay);
         UpdateCoinText(PlayerController.Instance.Statistics.Money);
 
         Cursor.lockState = CursorLockMode.Locked;
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
-        stat = GameObject.Find("Game Manager").GetComponent<GameStat>();
+        stat = GameObject.Find("Game Manager").GetComponent<GameStats>();
     }
     public void UpdateHPUI(int healthAmount)
     {
@@ -61,6 +65,12 @@ public class UIController : MonoBehaviour
         _healthSlider.value = healthAmount;
 
         _healthText.SetText($"HP: {healthAmount}");
+    }
+
+    public void UpdateACDUI(float amount)
+    {
+        _attackCoolDownSlider.maxValue = player.Statistics.AttackDelay;
+        _attackCoolDownSlider.value = amount;
     }
 
     public void UpdateCoinText(int coinAmount)
@@ -90,6 +100,7 @@ public class UIController : MonoBehaviour
     public void ChangeAtkSpeedStat(int level, float amount)
     {
         _atkSpeedText.text = $"Attack speed: {amount}";
+        UpdateACDUI(amount);
         _atkSpeedButton.transform.GetComponentInChildren<TextMeshProUGUI>().text = $"{10 + (5 * level)} coins";
     }
 
